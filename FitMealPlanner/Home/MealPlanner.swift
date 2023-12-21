@@ -6,19 +6,7 @@
 //
 
 import SwiftUI
-
-public enum IngredientCategory: String {
-	case Fruit = "Fruit 🍎"
-	case Vegetables = "Veggies 🥑"
-	case Cereals = "Cereals 🥖"
-	case Proteins = "Proteins 🥩"
-}
-
-struct Ingredient: Hashable {
-	let id = UUID()
-	let category: IngredientCategory
-	let name: String
-}
+import SwiftData
 
 struct CaloricIntakeRange: Hashable {
 	let name: String
@@ -36,84 +24,147 @@ struct MealPlanner: View {
 	@State private var mealPlanName: String = ""
 	@State private var numberOfDays: Int = 0
 	@State private var caloricIntakeRange: CaloricIntakeRange = CaloricIntakeRange.low
-	let ingredients: [IngredientCategory] = [.Fruit, .Vegetables, .Cereals, .Proteins]
-	@State private var selectedIngredient: IngredientCategory? = nil
+	let ingredientCategories: [IngredientCategory] = [.Fruit, .Vegetables, .Cereals, .Proteins]
+	
+	@State private var selectedCategory: IngredientCategory? = nil
+	@State private var showIngredientSheet = false
 
-	var body: some View {
-		VStack(alignment: .leading) {
-			TextField("Name of meal plan", text: $mealPlanName)
+	private var mealPlanField: some View {
+		TextField("Name of meal plan", text: $mealPlanName)
+			.padding()
+			.frame(height: 60)
+			.NeumorphicStyle()
+			.padding()
+	}
+	
+	private var numberOfDaysFields: some View {
+		HStack {
+			Text("Number of days")
 				.padding()
-				.addBorder()
-				.padding()
-			
-			HStack {
-				Text("Number of days")
-					.padding()
-				Spacer()
-				Picker("Number of days", selection: $numberOfDays) {
-					ForEach(1...24, id: \.self) {
-						Text("\($0) days")
-					}
+			Spacer()
+			Picker("Number of days", selection: $numberOfDays) {
+				ForEach(1...24, id: \.self) {
+					Text("\($0) days")
 				}
 			}
-			.frame(maxWidth: .infinity, alignment: .leading)
-			.addBorder()
-			.padding()
-			// caloric instake
-			HStack {
-				Text("Caloric Intake")
-					.padding()
-				Spacer()
-				Picker("Caloric Intake", selection: $caloricIntakeRange) {
-					ForEach(CaloricIntakeRange.allRanges, id: \.self) { caloricRange in
-						Text("\(caloricRange.range.lowerBound) to \(caloricRange.range.upperBound)")
-							.padding()
-					}
+		}
+		.frame(maxWidth: .infinity, alignment: .leading)
+		.frame(height: 60)
+		.NeumorphicStyle()
+		.padding()
+	}
+
+	private var caloricIntakeField: some View {
+		HStack {
+			Text("Caloric Intake")
+				.padding()
+			Spacer()
+			Picker("Caloric Intake", selection: $caloricIntakeRange) {
+				ForEach(CaloricIntakeRange.allRanges, id: \.self) { caloricRange in
+					Text("\(caloricRange.range.lowerBound) to \(caloricRange.range.upperBound)")
+						.padding()
 				}
 			}
-			.frame(maxWidth: .infinity, alignment: .leading)
-			.addBorder()
-			.padding()
-			
-			// ingredients
+		}
+		.frame(maxWidth: .infinity, alignment: .leading)
+		.frame(height: 60)
+		.NeumorphicStyle()
+		.padding()
+	}
 
-			RoundedRectangle(cornerSize: CGSize(width: 20, height: 10))
-				.fill(.white)
-				.overlay(
-					VStack(alignment: .leading, spacing: 10) {
-						Text("Choose your ingredients")
-							.padding(.top, 10)
-							.padding(.horizontal)
-						ScrollView(.horizontal, showsIndicators: false) {
-							HStack(spacing: 20) {
-								ForEach(ingredients, id: \.self) {
-									Text("\($0.self.rawValue)")
-										.foregroundStyle(.white)
+	private var ingredientsField: some View {
+		RoundedRectangle(cornerSize: CGSize(width: 20, height: 10))
+			.fill(.white)
+			.overlay(
+				VStack(alignment: .leading, spacing: 10) {
+					Text("Choose your ingredients")
+						.padding(.top, 10)
+						.padding(.horizontal)
+					let _ = selectedCategory?.rawValue
+//						A fix for the sheet bug. Hacky but still relevant https://developer.apple.com/forums/thread/652080?page=2
+					ScrollView(.horizontal, showsIndicators: false) {
+						HStack(spacing: 20) {
+							ForEach(ingredientCategories, id: \.self) { category in
+								Button {
+									Task {
+										selectedCategory = category
+										showIngredientSheet.toggle()
+									}
+								} label: {
+									Text("\(category.rawValue)")
+										.foregroundStyle(Color.backgroundDark)
 										.font(.title3)
-										.frame(width: 110, height: 100)
-										.background(Color.pastelSkyBlue)
+										.frame(width: 110, height: 120)
+										.background(Color.pastelLavender.opacity(0.3))
 										.cornerRadius(10)
 								}
+								.NeumorphicStyle()
 							}
-							.padding()
 						}
-						
+						.padding()
 					}
-					.frame(maxHeight: .infinity, alignment: .topLeading)
-				)
-				.frame(height: 200)
-				.addBorder()
-				.padding()
-		
-			Spacer()
-			RoundedPrimaryButton(title: "Create Meal Plan") {
-					  // Button action
-					  print("Button tapped!")
+				}
+				.frame(maxHeight: .infinity, alignment: .topLeading)
+			)
+			.frame(height: 200)
+			.NeumorphicStyle()
+			.padding()
+	}
+
+	private var createMealPlanButton: some View {
+		NeumorphicAsyncButton(
+			action: { completion in
+				// Your asynchronous operation goes here
+				Task {
+					do {
+						let result = try await someAsyncOperation()
+					} catch {
+						print("Error: \(error)")
+					}
+					// Call the completion closure when the operation is finished
+					completion()
+				}
+			},
+			text: "Create Meal Plan",
+			icon: "🍽️"
+		)
+		.frame(maxWidth: .infinity)
+	}
+	
+	var body: some View {
+		NavigationView {
+			VStack(alignment: .leading, spacing: 0) {
+				mealPlanField
+				numberOfDaysFields
+				caloricIntakeField
+				ingredientsField
+				Spacer()
+				createMealPlanButton
 			}
-			.padding(.bottom, 10)
+			.frame(maxWidth: .infinity, maxHeight: .infinity)
+			.sheet(isPresented: $showIngredientSheet, content: {
+				IngredientList(category: $selectedCategory)
+			})
+			.toolbar() {
+				Button(
+					action: {
+						print("go to plans.")
+					},
+					label: {
+						Text("My meal plans 🥦")
+							.frame(minWidth: 80)
+					}
+				)
+				.buttonStyle(NeumorphicButton(shape: RoundedRectangle(cornerRadius: 20)))
+			}
+			
 		}
-		.frame(maxWidth: .infinity, maxHeight: .infinity)
-//		.fullScreenCover(item: $selectedIngredient, content: <#T##(Identifiable) -> View#>)
+	}
+
+	private func someAsyncOperation() async throws -> String {
+		// Simulate an asynchronous operation
+		try await Task.sleep(nanoseconds: 3 * 1_000_000_000)  // Three seconds
+		return "done"
 	}
 }
 
@@ -121,39 +172,5 @@ struct MealPlanner: View {
     MealPlanner()
 }
 
-extension View {
-	func addBorder() -> some View {
-		self.overlay(RoundedRectangle(cornerRadius: 10.0).strokeBorder(Color.pastelMint, style: StrokeStyle(lineWidth: 1.0)))
-	}
-}
-// need firstly a list of foods to include
-// veggie colum
-// cereeals
-// proteins
-//
-// need a list to disclude (allergens or disclude)
-// amount of days needed.. (pay models can depends on this)
-// amount of calories daily
-
 //feature
 // shopping list creation..
-
-import SwiftUI
-
-struct RoundedPrimaryButton: View {
-	var title: String
-	var action: () -> Void
-	
-	var body: some View {
-		Button(action: action) {
-			Text(title)
-				.font(.headline)
-				.foregroundColor(.textLight)
-				.padding()
-				.frame(minWidth: 0, maxWidth: .infinity)
-				.background(Color.pastelMint)
-				.cornerRadius(10)
-				.padding(.horizontal)
-		}
-	}
-}

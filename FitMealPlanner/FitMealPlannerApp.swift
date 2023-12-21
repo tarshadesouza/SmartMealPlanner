@@ -11,7 +11,8 @@ import SwiftUI
 struct FitMealPlannerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
-        }
+			MealPlanner()
+		}
+		.modelContainer(for: Ingredient.self)
     }
 }
