@@ -21,6 +21,7 @@ struct CaloricIntakeRange: Hashable {
 }
 
 struct MealPlanner: View {
+	@Environment(\.modelContext) private var modelContext
 	@State private var mealPlanName: String = ""
 	@State private var numberOfDays: Int = 0
 	@State private var caloricIntakeRange: CaloricIntakeRange = CaloricIntakeRange.low
@@ -28,6 +29,44 @@ struct MealPlanner: View {
 	
 	@State private var selectedCategory: IngredientCategory? = nil
 	@State private var showIngredientSheet = false
+	@State var isShowingMealPlans = false
+	@State private var selectedIngredients: [IngredientCategory: [Ingredient]] = [:] // probs need to be a hashmap.
+
+	var body: some View {
+		NavigationView {
+			VStack(alignment: .leading, spacing: 0) {
+				mealPlanField
+				numberOfDaysFields
+				caloricIntakeField
+				ingredientsField
+				Spacer()
+				createMealPlanButton
+			}
+			.frame(maxWidth: .infinity, maxHeight: .infinity)
+			.sheet(isPresented: $showIngredientSheet, content: {
+				IngredientList(category: $selectedCategory, selectedIngredients: $selectedIngredients)
+			})
+			.fullScreenCover(isPresented: $isShowingMealPlans, content: {
+				MyMealPlans()
+			})
+			.toolbar() {
+				Button(
+					action: {
+						isShowingMealPlans.toggle()
+					},
+					label: {
+							Text("My meal plans 🥦")
+								.frame(minWidth: 80)
+					}
+				)
+				.buttonStyle(NeumorphicButton(shape: RoundedRectangle(cornerRadius: 20)))
+			}
+			.onChange(of: selectedIngredients) { oldValue, newValue in
+				print(newValue, "selected ingredients are")
+			}
+
+		}
+	}
 
 	private var mealPlanField: some View {
 		TextField("Name of meal plan", text: $mealPlanName)
@@ -117,7 +156,10 @@ struct MealPlanner: View {
 				// Your asynchronous operation goes here
 				Task {
 					do {
-						let result = try await someAsyncOperation()
+						_ = try await generateMealPlan()
+						// success show meal plan and clear form
+						isShowingMealPlans.toggle()
+						
 					} catch {
 						print("Error: \(error)")
 					}
@@ -130,42 +172,29 @@ struct MealPlanner: View {
 		)
 		.frame(maxWidth: .infinity)
 	}
-	
-	var body: some View {
-		NavigationView {
-			VStack(alignment: .leading, spacing: 0) {
-				mealPlanField
-				numberOfDaysFields
-				caloricIntakeField
-				ingredientsField
-				Spacer()
-				createMealPlanButton
-			}
-			.frame(maxWidth: .infinity, maxHeight: .infinity)
-			.sheet(isPresented: $showIngredientSheet, content: {
-				IngredientList(category: $selectedCategory)
-			})
-			.toolbar() {
-				Button(
-					action: {
-						print("go to plans.")
-					},
-					label: {
-						Text("My meal plans 🥦")
-							.frame(minWidth: 80)
-					}
-				)
-				.buttonStyle(NeumorphicButton(shape: RoundedRectangle(cornerRadius: 20)))
-			}
-			
-		}
+
+	private func resetForm() {
+		mealPlanName = ""
+		numberOfDays = 0
+		caloricIntakeRange = CaloricIntakeRange.low
 	}
 
-	private func someAsyncOperation() async throws -> String {
-		// Simulate an asynchronous operation
+	private func generateMealPlan() async throws -> String {
+		// Your meal plan creation logic
+//		let day = MealPlan.Day(day: 1, meals: [MealPlan.Meal(name: "", food: [""])], calories: 0)
+//		let sampleMealPlan = ExampleData.sampleMealPlan ?? MealPlan(days: [day])
+//		 sampleMealPlan.mealPlanName = mealPlanName // set the name
+
+		// Insert the meal plan into your data model or service and await its completion
+//		 modelContext.insert(sampleMealPlan)
+		
 		try await Task.sleep(nanoseconds: 3 * 1_000_000_000)  // Three seconds
+		// Check if the meal plan is in your data model or service using FetchDescriptor
+		print(selectedIngredients.count)
 		return "done"
 	}
+
+
 }
 
 #Preview {

@@ -6,13 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct FitMealPlannerApp: App {
+
     var body: some Scene {
         WindowGroup {
 			MealPlanner()
 		}
-		.modelContainer(for: Ingredient.self)
+		.modelContainer(for: [Ingredient.self, MealPlan.self, MealPlan.Day.self, MealPlan.Meal.self ])
     }
 }

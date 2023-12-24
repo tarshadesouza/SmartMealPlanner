@@ -15,11 +15,13 @@
 		C18F64502B2750F900DC6793 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C18F644F2B2750F900DC6793 /* Assets.xcassets */; };
 		C18F64532B2750F900DC6793 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C18F64522B2750F900DC6793 /* Preview Assets.xcassets */; };
 		C18F645C2B27515600DC6793 /* MealPlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18F645B2B27515600DC6793 /* MealPlanner.swift */; };
+		C1A815F62B3836430094E4BC /* SequentialFadeInModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A815F52B3836430094E4BC /* SequentialFadeInModifier.swift */; };
 		C1C0AE122B3359D0002FEA6E /* NeumorphicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C0AE112B3359D0002FEA6E /* NeumorphicButton.swift */; };
 		C1C0AE152B335A13002FEA6E /* DotProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C0AE142B335A13002FEA6E /* DotProgressView.swift */; };
 		C1C0AE172B335A50002FEA6E /* NeumorphicAsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C0AE162B335A50002FEA6E /* NeumorphicAsyncButton.swift */; };
 		C1C0AE1A2B336C7C002FEA6E /* IngredientsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C0AE192B336C7C002FEA6E /* IngredientsListViewModel.swift */; };
 		C1C0AE1D2B336F6B002FEA6E /* MyMealPlans.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C0AE1C2B336F6B002FEA6E /* MyMealPlans.swift */; };
+		C1DA755C2B34505B00BC6530 /* MealPlanDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DA755B2B34505B00BC6530 /* MealPlanDetailView.swift */; };
 		C1FFEE692B31EA5E009590B2 /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FFEE682B31EA5E009590B2 /* Ingredient.swift */; };
 /* End PBXBuildFile section */
 
@@ -34,11 +36,13 @@
 		C18F64522B2750F900DC6793 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C18F64542B2750F900DC6793 /* FitMealPlanner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FitMealPlanner.entitlements; sourceTree = "<group>"; };
 		C18F645B2B27515600DC6793 /* MealPlanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealPlanner.swift; sourceTree = "<group>"; };
+		C1A815F52B3836430094E4BC /* SequentialFadeInModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequentialFadeInModifier.swift; sourceTree = "<group>"; };
 		C1C0AE112B3359D0002FEA6E /* NeumorphicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeumorphicButton.swift; sourceTree = "<group>"; };
 		C1C0AE142B335A13002FEA6E /* DotProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotProgressView.swift; sourceTree = "<group>"; };
 		C1C0AE162B335A50002FEA6E /* NeumorphicAsyncButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeumorphicAsyncButton.swift; sourceTree = "<group>"; };
 		C1C0AE192B336C7C002FEA6E /* IngredientsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsListViewModel.swift; sourceTree = "<group>"; };
 		C1C0AE1C2B336F6B002FEA6E /* MyMealPlans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMealPlans.swift; sourceTree = "<group>"; };
+		C1DA755B2B34505B00BC6530 /* MealPlanDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealPlanDetailView.swift; sourceTree = "<group>"; };
 		C1FFEE682B31EA5E009590B2 /* Ingredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -56,6 +60,7 @@
 		C1142AF72B30B768009D3EAF /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				C1A815F42B3836310094E4BC /* Animation */,
 				C1C0AE132B335A01002FEA6E /* ProgressView */,
 				C1C0AE102B3359B9002FEA6E /* Buttons */,
 				C1142AF82B30B772009D3EAF /* Color */,
@@ -99,6 +104,7 @@
 		C18F644A2B2750F700DC6793 /* FitMealPlanner */ = {
 			isa = PBXGroup;
 			children = (
+				C1DA755A2B34504300BC6530 /* MealPlans */,
 				C1C0AE1B2B336F52002FEA6E /* Form */,
 				C1FFEE672B31EA4B009590B2 /* Model */,
 				C1142AF72B30B768009D3EAF /* UI */,
@@ -125,9 +131,16 @@
 			isa = PBXGroup;
 			children = (
 				C18F645B2B27515600DC6793 /* MealPlanner.swift */,
-				C1C0AE1C2B336F6B002FEA6E /* MyMealPlans.swift */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		C1A815F42B3836310094E4BC /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				C1A815F52B3836430094E4BC /* SequentialFadeInModifier.swift */,
+			);
+			path = Animation;
 			sourceTree = "<group>";
 		};
 		C1C0AE102B3359B9002FEA6E /* Buttons */ = {
@@ -152,6 +165,15 @@
 			children = (
 			);
 			path = Form;
+			sourceTree = "<group>";
+		};
+		C1DA755A2B34504300BC6530 /* MealPlans */ = {
+			isa = PBXGroup;
+			children = (
+				C1C0AE1C2B336F6B002FEA6E /* MyMealPlans.swift */,
+				C1DA755B2B34505B00BC6530 /* MealPlanDetailView.swift */,
+			);
+			path = MealPlans;
 			sourceTree = "<group>";
 		};
 		C1FFEE672B31EA4B009590B2 /* Model */ = {
@@ -237,7 +259,9 @@
 				C1C0AE152B335A13002FEA6E /* DotProgressView.swift in Sources */,
 				C180E7422B28CC9C0005A34E /* IngredientList.swift in Sources */,
 				C1142AF62B30B5C3009D3EAF /* IngredientSampleData.swift in Sources */,
+				C1A815F62B3836430094E4BC /* SequentialFadeInModifier.swift in Sources */,
 				C1C0AE1A2B336C7C002FEA6E /* IngredientsListViewModel.swift in Sources */,
+				C1DA755C2B34505B00BC6530 /* MealPlanDetailView.swift in Sources */,
 				C1FFEE692B31EA5E009590B2 /* Ingredient.swift in Sources */,
 				C18F645C2B27515600DC6793 /* MealPlanner.swift in Sources */,
 				C18F644E2B2750F700DC6793 /* ContentView.swift in Sources */,
@@ -385,6 +409,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_UILaunchStoryboardName = test;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -416,6 +441,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_UILaunchStoryboardName = test;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
