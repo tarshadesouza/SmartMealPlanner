@@ -30,7 +30,15 @@ struct MealPlanner: View {
 	@State private var selectedCategory: IngredientCategory? = nil
 	@State private var showIngredientSheet = false
 	@State var isShowingMealPlans = false
-	@State private var selectedIngredients: [IngredientCategory: [Ingredient]] = [:] // probs need to be a hashmap.
+	@State private var ingredients: [IngredientCategory: [Ingredient]] = [:]
+	
+	private var allSelectedIngredients: [Ingredient] {
+		let filteredSelectedIngredients = ingredients.mapValues { ingredients in
+			ingredients.filter { $0.isSelected }
+		}
+		let allSelectedIngredients: [Ingredient] = Array(filteredSelectedIngredients.values.flatMap { $0 })
+		return allSelectedIngredients
+	}
 
 	var body: some View {
 		NavigationView {
@@ -44,7 +52,7 @@ struct MealPlanner: View {
 			}
 			.frame(maxWidth: .infinity, maxHeight: .infinity)
 			.sheet(isPresented: $showIngredientSheet, content: {
-				IngredientList(category: $selectedCategory, selectedIngredients: $selectedIngredients)
+				IngredientList(category: $selectedCategory, ingredients: $ingredients)
 			})
 			.fullScreenCover(isPresented: $isShowingMealPlans, content: {
 				MyMealPlans()
@@ -61,8 +69,18 @@ struct MealPlanner: View {
 				)
 				.buttonStyle(NeumorphicButton(shape: RoundedRectangle(cornerRadius: 20)))
 			}
-			.onChange(of: selectedIngredients) { oldValue, newValue in
-				print(newValue, "selected ingredients are")
+			.onChange(of: showIngredientSheet) {
+				allSelectedIngredients.forEach({ ingredient in
+					print(ingredient.name)
+				})
+			}
+			.onFirstAppear {
+				// Initial sample ingredients data.
+				ingredientCategories.forEach { category in
+					ingredients[category] = category.sampleIngredients
+					print("- Category: \(category.rawValue)")
+					print("- ingredients: \(ingredients[category])")
+				}
 			}
 
 		}
@@ -116,28 +134,17 @@ struct MealPlanner: View {
 			.fill(.white)
 			.overlay(
 				VStack(alignment: .leading, spacing: 10) {
-					Text("Choose your ingredients")
-						.padding(.top, 10)
-						.padding(.horizontal)
+						Text("Choose your ingredients")
+							
+							.frame(maxWidth: .infinity, alignment: .leading)
+							.padding(.horizontal)
+					.padding(.top, 10)
 					let _ = selectedCategory?.rawValue
 //						A fix for the sheet bug. Hacky but still relevant https://developer.apple.com/forums/thread/652080?page=2
 					ScrollView(.horizontal, showsIndicators: false) {
 						HStack(spacing: 20) {
 							ForEach(ingredientCategories, id: \.self) { category in
-								Button {
-									Task {
-										selectedCategory = category
-										showIngredientSheet.toggle()
-									}
-								} label: {
-									Text("\(category.rawValue)")
-										.foregroundStyle(Color.backgroundDark)
-										.font(.title3)
-										.frame(width: 110, height: 120)
-										.background(Color.pastelLavender.opacity(0.3))
-										.cornerRadius(10)
-								}
-								.NeumorphicStyle()
+								ingredientButton(category)
 							}
 						}
 						.padding()
@@ -148,6 +155,37 @@ struct MealPlanner: View {
 			.frame(height: 200)
 			.NeumorphicStyle()
 			.padding()
+	}
+
+	private func ingredientButton(_ category: IngredientCategory) -> some View {
+		ZStack(alignment: .topTrailing) {
+			Button {
+				Task {
+					selectedCategory = category
+					showIngredientSheet.toggle()
+				}
+			} label: {
+				Text("\(category.rawValue)")
+					.foregroundStyle(Color.backgroundDark)
+					.font(.title3)
+					.frame(width: 110, height: 120)
+					.background(Color.pastelLavender.opacity(0.3))
+					.cornerRadius(10)
+			}
+			.NeumorphicStyle()
+			Circle()
+				.fill(Color.pastelLavender.opacity(0.7))
+				.overlay {
+					Text("\(selectedIngredientCategoryCount(for: category))")
+				}
+				.frame(width: 30, height: 30, alignment: .topTrailing)
+				.padding([.trailing, .top], 5)
+				.opacity(selectedIngredientCategoryCount(for: category) >= 1 ? 1 : 0)
+		}
+	}
+
+	private func selectedIngredientCategoryCount(for category: IngredientCategory) -> Int {
+		ingredients[category]?.filter { $0.isSelected }.count ?? 0
 	}
 
 	private var createMealPlanButton: some View {
@@ -190,7 +228,7 @@ struct MealPlanner: View {
 		
 		try await Task.sleep(nanoseconds: 3 * 1_000_000_000)  // Three seconds
 		// Check if the meal plan is in your data model or service using FetchDescriptor
-		print(selectedIngredients.count)
+		print(allSelectedIngredients.count)
 		return "done"
 	}
 

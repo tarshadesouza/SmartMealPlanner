@@ -14,6 +14,19 @@ public enum IngredientCategory: String {
 	case Vegetables = "Veggies 🥑"
 	case Cereals = "Cereals 🥖"
 	case Proteins = "Proteins 🥩"
+
+	 var sampleIngredients: [Ingredient] {
+		switch self {
+		case .Fruit:
+			IngredientData.shared.fruits.map { Ingredient(category: .Fruit, name: $0) }
+		case .Vegetables:
+			IngredientData.shared.vegetables.map { Ingredient(category: .Vegetables, name: $0) }
+		case .Cereals:
+			IngredientData.shared.cereals.map { Ingredient(category: .Cereals, name: $0) }
+		case .Proteins:
+			IngredientData.shared.proteins.map { Ingredient(category: .Proteins, name: $0) }
+		}
+	}
 }
 
 @Model

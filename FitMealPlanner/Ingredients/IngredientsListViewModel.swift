@@ -10,28 +10,26 @@ import SwiftUI
 
 class IngredientListViewModel: ObservableObject {
 	@Binding var category: IngredientCategory?
-	@Published var filteredIngredients: [Ingredient] = []
+	@Binding var ingredients:[IngredientCategory: [Ingredient]]
 	
-	init(category: Binding<IngredientCategory?>) {
+	init(category: Binding<IngredientCategory?>, ingredients: Binding<[IngredientCategory: [Ingredient]]>) {
 		_category = category
-		setUpIngredientData()
-	}
-
-	func setUpIngredientData() {
-		guard let category = category else { return }
-		switch category {
-		case .Vegetables:
-			filteredIngredients = IngredientData.shared.vegetables.map { Ingredient(category: category, name: $0) }
-		case .Fruit:
-			filteredIngredients = IngredientData.shared.fruits.map { Ingredient(category: category, name: $0) }
-		case .Proteins:
-			filteredIngredients = IngredientData.shared.proteins.map { Ingredient(category: category, name: $0) }
-		case .Cereals:
-			filteredIngredients = IngredientData.shared.cereals.map { Ingredient(category: category, name: $0) }
-		}
+		_ingredients = ingredients
 	}
 
 	var selectedIngredients: [Ingredient] {
-		filteredIngredients.filter{ $0.isSelected }
+		guard let category = category else { return [] }
+		return ingredients[category]?.filter { $0.isSelected } ?? []
 	}
+	
+	func selectIngredient(_ ingredient: Ingredient) {
+		guard let category = category else { return }
+
+		guard let index = ingredients[category]?.firstIndex(of: ingredient) else {
+			return
+		}
+		let ingredients = ingredients[category]
+		ingredients?[index].isSelected.toggle()
+	}
+
 }

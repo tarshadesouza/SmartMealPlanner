@@ -10,11 +10,23 @@ import SwiftData
 
 @main
 struct FitMealPlannerApp: App {
+	
+	
+	let modelContainer: ModelContainer
+	
+	init() {
+		do {
+			modelContainer = try ModelContainer(for: Ingredient.self, MealPlan.self, MealPlan.Day.self, MealPlan.Meal.self )
+		} catch {
+			fatalError("Could not initialize ModelContainer")
+		}
+	}
 
     var body: some Scene {
         WindowGroup {
 			MealPlanner()
 		}
-		.modelContainer(for: [Ingredient.self, MealPlan.self, MealPlan.Day.self, MealPlan.Meal.self ])
+		.modelContainer(modelContainer)
+//		.modelContainer(for: [Ingredient.self, MealPlan.self, MealPlan.Day.self, MealPlan.Meal.self ])
     }
 }
