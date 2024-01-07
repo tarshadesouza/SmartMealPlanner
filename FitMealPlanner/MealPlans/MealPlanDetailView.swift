@@ -9,67 +9,75 @@ import SwiftUI
 import SwiftData
 
 struct MealPlanDetailView: View {
+	@Environment(\.colorScheme) var colorScheme
 	@Environment(\.presentationMode) var presentationMode
 	@Binding var mealPlan: MealPlan
 
-    var body: some View {
-			ScrollView {
-				VStack(alignment: .leading, spacing: 20) {
-					ForEach($mealPlan.days) { $day in
-						DisclosureGroup("Day \(day.day)", isExpanded: $day.isExpanded ) {
-							VStack(alignment: .leading) {
-								ForEach(day.meals) { meal in
-									VStack(alignment: .leading) {
-										Text(meal.name)
-											.font(.headline)
-											.fontWeight(.bold)
-										
-										ForEach(meal.food, id: \.self) { food in
-											Text("- \(food)")
-												.font(.body)
-												.padding(.leading, 20)
-										}
-									}
-									.padding(.bottom, 10)
-								}
-								
-								Text("Calories: \(day.calories)")
-									.font(.subheadline)
-									.foregroundColor(.secondary)
-									.padding(.top, 5)
+	private var backgroundColor: Color {
+		colorScheme == .light ? Color.backgroundLight : Color.backgroundDark
+	}
+
+	var body: some View {
+		ScrollView {
+			VStack(alignment: .leading, spacing: 20) {
+				ForEach($mealPlan.days.sorted(by: { $0.day.wrappedValue < $1.day.wrappedValue })) { $day in
+					DisclosureGroup("Day \(day.day)", isExpanded: $day.isExpanded ) {
+						VStack(alignment: .leading) {
+							ForEach(day.meals) { meal in
+								mealPlanCard(meal)
 							}
-							.frame(maxWidth: .infinity, alignment: .leading)
-							.padding()
-							.NeumorphicStyle()
-							.padding()
+							
+							Text("Calories: \(day.calories)")
+								.font(.subheadline)
+								.foregroundColor(.secondary)
+								.padding(.top, 5)
 						}
-						.tint(Color.pastelRose)
-						.font(.headline)
-						.fontWeight(.bold)
-						.background(Color.backgroundLight)
-						
+						.frame(maxWidth: .infinity, alignment: .leading)
+						.padding()
+						.NeumorphicStyle(using: colorScheme)
+						.padding()
 					}
+					.tint(Color.pastelRose)
+					.font(.headline)
+					.fontWeight(.bold)
+					.background(backgroundColor)
 				}
-				.padding()
-				.frame(maxWidth: .infinity, maxHeight: .infinity)
 			}
-			.navigationBarBackButtonHidden(true)
-				.toolbar {
-					ToolbarItem(placement: .navigationBarLeading) {
-						Button(action: {
-							presentationMode.wrappedValue.dismiss()
-						}) {
-							Image(systemName: "arrow.left.circle.fill")
-								.resizable()
-								.renderingMode(.template)
-								.frame(width: 24, height: 24)
-								.foregroundColor(.pastelRose)
-						}
-					}
+			.padding()
+			.frame(maxWidth: .infinity, maxHeight: .infinity)
+		}
+		.navigationBarBackButtonHidden(true)
+		.toolbar {
+			ToolbarItem(placement: .navigationBarLeading) {
+				Button(action: {
+					presentationMode.wrappedValue.dismiss()
+				}) {
+					Image(systemName: "arrow.left.circle.fill")
+						.resizable()
+						.renderingMode(.template)
+						.frame(width: 24, height: 24)
+						.foregroundColor(.pastelRose)
 				}
-			.navigationTitle("My NY Resolution 🥗")
-			.background(Color.backgroundLight)
-    }
+			}
+		}
+		.navigationTitle("My NY Resolution 🥗")
+		.background(backgroundColor)
+	}
+	
+	private func mealPlanCard(_ meal: MealPlan.Meal) -> some View {
+		VStack(alignment: .leading) {
+			Text(meal.name)
+				.font(.headline)
+				.fontWeight(.bold)
+			
+			ForEach(meal.food, id: \.self) { food in
+				Text("- \(food)")
+					.font(.body)
+					.padding(.leading, 20)
+			}
+		}
+		.padding(.bottom, 10)
+	}
 }
 
 #Preview {
@@ -80,49 +88,3 @@ struct MealPlanDetailView: View {
 	return MealPlanDetailView(mealPlan: .constant(sampleMealPlan))
 		.modelContainer(container)
 }
-
-
-//NavigationView {
-//	ScrollView {
-//		VStack(alignment: .leading, spacing: 20) {
-//			ForEach($viewModel.mealPlan.days) { $day in
-//				DisclosureGroup("Day \(day.day)", isExpanded: $day.isExpanded ) {
-//					VStack(alignment: .leading) {
-//						ForEach(day.meals) { meal in
-//							VStack(alignment: .leading) {
-//								Text(meal.name)
-//									.font(.headline)
-//									.fontWeight(.bold)
-//
-//								ForEach(meal.food, id: \.self) { food in
-//									Text("- \(food)")
-//										.font(.body)
-//										.padding(.leading, 20)
-//								}
-//							}
-//							.padding(.bottom, 10)
-//						}
-//
-//						Text("Calories: \(day.calories)")
-//							.font(.subheadline)
-//							.foregroundColor(.secondary)
-//							.padding(.top, 5)
-//					}
-//					.frame(maxWidth: .infinity, alignment: .leading)
-//					.padding()
-//					.NeumorphicStyle()
-//					.padding()
-//				}
-//				.tint(Color.pastelRose)
-//				.font(.headline)
-//				.fontWeight(.bold)
-//				.background(Color.backgroundLight)
-//
-//			}
-//		}
-//		.padding()
-//		.frame(maxWidth: .infinity, maxHeight: .infinity)
-//	}
-//	.navigationTitle("Meal Plans 🥦")
-//	.background(Color.backgroundLight)
-//}

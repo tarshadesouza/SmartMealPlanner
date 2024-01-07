@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct IngredientList: View {
+	@Environment(\.colorScheme) var colorScheme
 	@Environment(\.dismiss) var dismiss
 	@Environment(\.modelContext) private var modelContext
 	@Query var userAddedIngredients: [Ingredient]
@@ -66,6 +67,7 @@ struct IngredientList: View {
 			},
 			label: {
 				Text(doneButtonTitle)
+					.regularFont()
 					.frame(minWidth: 80)
 			}
 		)
@@ -82,9 +84,10 @@ struct IngredientList: View {
 				isShowingNewIngredientField.toggle()
 			}
 		})
+		.regularFont()
 		.padding()
 		.frame(height: isShowingNewIngredientField ? 50 : 0)
-		.NeumorphicStyle()
+		.NeumorphicStyle(using: colorScheme)
 		.padding()
 		.opacity(isShowingNewIngredientField ? 1 : 0)
 	}
@@ -119,6 +122,7 @@ struct IngredientList: View {
 				.background(ingredient.isSelected ? Color.pastelRose : Color.white)
 				.cornerRadius(4)
 			Text(ingredient.name)
+				.lightFont()
 		}
 		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 	}
@@ -161,10 +165,10 @@ struct IngredientList: View {
 	}
 }
 
-//#Preview {
-//	 let config = ModelConfiguration(isStoredInMemoryOnly: true)
-//	 let container = try! ModelContainer(for: Ingredient.self, configurations: config)
-//
-//	return IngredientList(category: .constant(.Fruit))
-//		 .modelContainer(container)
-//}
+#Preview {
+	 let config = ModelConfiguration(isStoredInMemoryOnly: true)
+	 let container = try! ModelContainer(for: Ingredient.self, configurations: config)
+	let fruitSampleData = IngredientData.shared.fruits.map { Ingredient(category: .Fruit, name: $0) }
+	return IngredientList(category: .constant(.Fruit), ingredients: .constant([.Fruit: fruitSampleData]))
+		 .modelContainer(container)
+}

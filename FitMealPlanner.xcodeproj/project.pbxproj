@@ -10,6 +10,11 @@
 		C1142AF62B30B5C3009D3EAF /* IngredientSampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1142AF52B30B5C3009D3EAF /* IngredientSampleData.swift */; };
 		C1142AFA2B30B789009D3EAF /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1142AF92B30B789009D3EAF /* ColorScheme.swift */; };
 		C16AC35F2B3DB9CA00AE42E5 /* OnFirstAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16AC35E2B3DB9CA00AE42E5 /* OnFirstAppear.swift */; };
+		C17F6B312B3DDEA2002D3050 /* NunitoSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C17F6B302B3DDEA2002D3050 /* NunitoSans-Bold.ttf */; };
+		C17F6B332B3DDEE1002D3050 /* NunitoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C17F6B322B3DDEE1002D3050 /* NunitoSans-Regular.ttf */; };
+		C17F6B352B3DDEEC002D3050 /* NunitoSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C17F6B342B3DDEEC002D3050 /* NunitoSans-Light.ttf */; };
+		C17F6B372B3DDF6D002D3050 /* FontHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17F6B362B3DDF6D002D3050 /* FontHelper.swift */; };
+		C17F6B3A2B3DE53E002D3050 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = C17F6B392B3DE53E002D3050 /* GoogleMobileAds */; };
 		C180E7422B28CC9C0005A34E /* IngredientList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C180E7412B28CC9C0005A34E /* IngredientList.swift */; };
 		C18F644C2B2750F700DC6793 /* FitMealPlannerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18F644B2B2750F700DC6793 /* FitMealPlannerApp.swift */; };
 		C18F644E2B2750F700DC6793 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18F644D2B2750F700DC6793 /* ContentView.swift */; };
@@ -30,6 +35,10 @@
 		C1142AF52B30B5C3009D3EAF /* IngredientSampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientSampleData.swift; sourceTree = "<group>"; };
 		C1142AF92B30B789009D3EAF /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
 		C16AC35E2B3DB9CA00AE42E5 /* OnFirstAppear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnFirstAppear.swift; sourceTree = "<group>"; };
+		C17F6B302B3DDEA2002D3050 /* NunitoSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-Bold.ttf"; sourceTree = "<group>"; };
+		C17F6B322B3DDEE1002D3050 /* NunitoSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-Regular.ttf"; sourceTree = "<group>"; };
+		C17F6B342B3DDEEC002D3050 /* NunitoSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NunitoSans-Light.ttf"; sourceTree = "<group>"; };
+		C17F6B362B3DDF6D002D3050 /* FontHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontHelper.swift; sourceTree = "<group>"; };
 		C180E7412B28CC9C0005A34E /* IngredientList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientList.swift; sourceTree = "<group>"; };
 		C18F64482B2750F700DC6793 /* FitMealPlanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FitMealPlanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C18F644B2B2750F700DC6793 /* FitMealPlannerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitMealPlannerApp.swift; sourceTree = "<group>"; };
@@ -53,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C17F6B3A2B3DE53E002D3050 /* GoogleMobileAds in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +96,17 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		C16AC3602B3DD23500AE42E5 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				C17F6B322B3DDEE1002D3050 /* NunitoSans-Regular.ttf */,
+				C17F6B342B3DDEEC002D3050 /* NunitoSans-Light.ttf */,
+				C17F6B302B3DDEA2002D3050 /* NunitoSans-Bold.ttf */,
+				C17F6B362B3DDF6D002D3050 /* FontHelper.swift */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		C180E7402B28CC8C0005A34E /* Ingredients */ = {
 			isa = PBXGroup;
 			children = (
@@ -114,6 +135,7 @@
 		C18F644A2B2750F700DC6793 /* FitMealPlanner */ = {
 			isa = PBXGroup;
 			children = (
+				C16AC3602B3DD23500AE42E5 /* Fonts */,
 				C16AC35D2B3DB9B900AE42E5 /* Helpers */,
 				C1DA755A2B34504300BC6530 /* MealPlans */,
 				C1C0AE1B2B336F52002FEA6E /* Form */,
@@ -212,6 +234,9 @@
 			dependencies = (
 			);
 			name = FitMealPlanner;
+			packageProductDependencies = (
+				C17F6B392B3DE53E002D3050 /* GoogleMobileAds */,
+			);
 			productName = FitMealPlanner;
 			productReference = C18F64482B2750F700DC6793 /* FitMealPlanner.app */;
 			productType = "com.apple.product-type.application";
@@ -240,6 +265,9 @@
 				Base,
 			);
 			mainGroup = C18F643F2B2750F700DC6793;
+			packageReferences = (
+				C17F6B382B3DE53E002D3050 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+			);
 			productRefGroup = C18F64492B2750F700DC6793 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -255,6 +283,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C18F64532B2750F900DC6793 /* Preview Assets.xcassets in Resources */,
+				C17F6B312B3DDEA2002D3050 /* NunitoSans-Bold.ttf in Resources */,
+				C17F6B332B3DDEE1002D3050 /* NunitoSans-Regular.ttf in Resources */,
+				C17F6B352B3DDEEC002D3050 /* NunitoSans-Light.ttf in Resources */,
 				C18F64502B2750F900DC6793 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -270,6 +301,7 @@
 				C1C0AE152B335A13002FEA6E /* DotProgressView.swift in Sources */,
 				C180E7422B28CC9C0005A34E /* IngredientList.swift in Sources */,
 				C1142AF62B30B5C3009D3EAF /* IngredientSampleData.swift in Sources */,
+				C17F6B372B3DDF6D002D3050 /* FontHelper.swift in Sources */,
 				C1A815F62B3836430094E4BC /* SequentialFadeInModifier.swift in Sources */,
 				C1C0AE1A2B336C7C002FEA6E /* IngredientsListViewModel.swift in Sources */,
 				C1DA755C2B34505B00BC6530 /* MealPlanDetailView.swift in Sources */,
@@ -339,6 +371,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -396,6 +429,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -419,6 +453,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FitMealPlanner/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_UILaunchStoryboardName = test;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -451,6 +487,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FitMealPlanner/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_UILaunchStoryboardName = test;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -491,6 +529,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C17F6B382B3DE53E002D3050 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.14.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C17F6B392B3DE53E002D3050 /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C17F6B382B3DE53E002D3050 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C18F64402B2750F700DC6793 /* Project object */;
 }

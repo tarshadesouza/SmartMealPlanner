@@ -11,16 +11,17 @@ import SwiftData
 struct CaloricIntakeRange: Hashable {
 	let name: String
 	let range: ClosedRange<Int>
-
+	
 	// Example: Low, Medium, High
 	static let low = CaloricIntakeRange(name: "Low", range: 1200...1500)
 	static let medium = CaloricIntakeRange(name: "Medium", range: 1501...2000)
 	static let high = CaloricIntakeRange(name: "High", range: 2001...2500)
-
+	
 	static let allRanges = [low, medium, high] // Use this array to iterate or display options
 }
 
 struct MealPlanner: View {
+	@Environment(\.colorScheme) var colorScheme
 	@Environment(\.modelContext) private var modelContext
 	@State private var mealPlanName: String = ""
 	@State private var numberOfDays: Int = 0
@@ -38,6 +39,10 @@ struct MealPlanner: View {
 		}
 		let allSelectedIngredients: [Ingredient] = Array(filteredSelectedIngredients.values.flatMap { $0 })
 		return allSelectedIngredients
+	}
+
+	private var backgroundColor: Color {
+		colorScheme == .light ? Color.backgroundLight : Color.backgroundDark
 	}
 
 	var body: some View {
@@ -63,16 +68,12 @@ struct MealPlanner: View {
 						isShowingMealPlans.toggle()
 					},
 					label: {
-							Text("My meal plans 🥦")
-								.frame(minWidth: 80)
+						Text("My meal plans 🥦")
+							.regularFont()
+							.frame(minWidth: 80)
 					}
 				)
 				.buttonStyle(NeumorphicButton(shape: RoundedRectangle(cornerRadius: 20)))
-			}
-			.onChange(of: showIngredientSheet) {
-				allSelectedIngredients.forEach({ ingredient in
-					print(ingredient.name)
-				})
 			}
 			.onFirstAppear {
 				// Initial sample ingredients data.
@@ -82,15 +83,15 @@ struct MealPlanner: View {
 					print("- ingredients: \(ingredients[category])")
 				}
 			}
-
 		}
 	}
-
+	
 	private var mealPlanField: some View {
 		TextField("Name of meal plan", text: $mealPlanName)
+			.regularFont()
 			.padding()
 			.frame(height: 60)
-			.NeumorphicStyle()
+			.NeumorphicStyle(using: colorScheme)
 			.padding()
 	}
 	
@@ -98,6 +99,7 @@ struct MealPlanner: View {
 		HStack {
 			Text("Number of days")
 				.padding()
+				.regularFont()
 			Spacer()
 			Picker("Number of days", selection: $numberOfDays) {
 				ForEach(1...24, id: \.self) {
@@ -107,14 +109,16 @@ struct MealPlanner: View {
 		}
 		.frame(maxWidth: .infinity, alignment: .leading)
 		.frame(height: 60)
-		.NeumorphicStyle()
+		.NeumorphicStyle(using: colorScheme)
 		.padding()
 	}
-
+	
 	private var caloricIntakeField: some View {
 		HStack {
 			Text("Caloric Intake")
+				.regularFont()
 				.padding()
+
 			Spacer()
 			Picker("Caloric Intake", selection: $caloricIntakeRange) {
 				ForEach(CaloricIntakeRange.allRanges, id: \.self) { caloricRange in
@@ -125,22 +129,22 @@ struct MealPlanner: View {
 		}
 		.frame(maxWidth: .infinity, alignment: .leading)
 		.frame(height: 60)
-		.NeumorphicStyle()
+		.NeumorphicStyle(using: colorScheme)
 		.padding()
 	}
-
+	
 	private var ingredientsField: some View {
 		RoundedRectangle(cornerSize: CGSize(width: 20, height: 10))
-			.fill(.white)
+			.fill(backgroundColor)
 			.overlay(
 				VStack(alignment: .leading, spacing: 10) {
-						Text("Choose your ingredients")
-							
-							.frame(maxWidth: .infinity, alignment: .leading)
-							.padding(.horizontal)
-					.padding(.top, 10)
+					Text("Choose your ingredients")
+						.regularFont()
+						.frame(maxWidth: .infinity, alignment: .leading)
+						.padding(.horizontal)
+						.padding(.top, 10)
 					let _ = selectedCategory?.rawValue
-//						A fix for the sheet bug. Hacky but still relevant https://developer.apple.com/forums/thread/652080?page=2
+					//						A fix for the sheet bug. Hacky but still relevant https://developer.apple.com/forums/thread/652080?page=2
 					ScrollView(.horizontal, showsIndicators: false) {
 						HStack(spacing: 20) {
 							ForEach(ingredientCategories, id: \.self) { category in
@@ -153,10 +157,10 @@ struct MealPlanner: View {
 				.frame(maxHeight: .infinity, alignment: .topLeading)
 			)
 			.frame(height: 200)
-			.NeumorphicStyle()
+			.NeumorphicStyle(using: colorScheme)
 			.padding()
 	}
-
+	
 	private func ingredientButton(_ category: IngredientCategory) -> some View {
 		ZStack(alignment: .topTrailing) {
 			Button {
@@ -167,27 +171,28 @@ struct MealPlanner: View {
 			} label: {
 				Text("\(category.rawValue)")
 					.foregroundStyle(Color.backgroundDark)
-					.font(.title3)
+					.regularFont()
 					.frame(width: 110, height: 120)
 					.background(Color.pastelLavender.opacity(0.3))
 					.cornerRadius(10)
 			}
-			.NeumorphicStyle()
+			.NeumorphicStyle(using: colorScheme)
 			Circle()
 				.fill(Color.pastelLavender.opacity(0.7))
 				.overlay {
 					Text("\(selectedIngredientCategoryCount(for: category))")
+						.regularFont()
 				}
 				.frame(width: 30, height: 30, alignment: .topTrailing)
 				.padding([.trailing, .top], 5)
 				.opacity(selectedIngredientCategoryCount(for: category) >= 1 ? 1 : 0)
 		}
 	}
-
+	
 	private func selectedIngredientCategoryCount(for category: IngredientCategory) -> Int {
 		ingredients[category]?.filter { $0.isSelected }.count ?? 0
 	}
-
+	
 	private var createMealPlanButton: some View {
 		NeumorphicAsyncButton(
 			action: { completion in
@@ -210,34 +215,34 @@ struct MealPlanner: View {
 		)
 		.frame(maxWidth: .infinity)
 	}
-
+	
 	private func resetForm() {
 		mealPlanName = ""
 		numberOfDays = 0
 		caloricIntakeRange = CaloricIntakeRange.low
 	}
-
+	
 	private func generateMealPlan() async throws -> String {
 		// Your meal plan creation logic
-//		let day = MealPlan.Day(day: 1, meals: [MealPlan.Meal(name: "", food: [""])], calories: 0)
-//		let sampleMealPlan = ExampleData.sampleMealPlan ?? MealPlan(days: [day])
-//		 sampleMealPlan.mealPlanName = mealPlanName // set the name
-
+				let day = MealPlan.Day(day: 1, meals: [MealPlan.Meal(name: "", food: [""])], calories: 0)
+				let sampleMealPlan = ExampleData.sampleMealPlan ?? MealPlan(days: [day])
+				 sampleMealPlan.mealPlanName = mealPlanName // set the name
+		
 		// Insert the meal plan into your data model or service and await its completion
-//		 modelContext.insert(sampleMealPlan)
+				 modelContext.insert(sampleMealPlan)
 		
 		try await Task.sleep(nanoseconds: 3 * 1_000_000_000)  // Three seconds
 		// Check if the meal plan is in your data model or service using FetchDescriptor
 		print(allSelectedIngredients.count)
 		return "done"
 	}
-
-
+	
+	
 }
 
 #Preview {
-    MealPlanner()
+	MealPlanner()
 }
 
-//feature
+// future feature
 // shopping list creation..

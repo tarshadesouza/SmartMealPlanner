@@ -61,7 +61,7 @@ import SwiftData
 
 	@Model class Day: Codable, Identifiable {
 		@Attribute(.unique) let id = UUID()
-		@Attribute let day: Int
+		@Attribute var day: Int
 		@Attribute let meals: [Meal]
 		@Attribute let calories: Int
 		var isExpanded = true
@@ -187,9 +187,8 @@ struct MyMealPlans: View {
 		}
 
 	private func deleteMealPlan(at index: Int) {
-		print("delete pressed")
-		viewModel.mealPlans.remove(at: index)
 		modelContext.delete(viewModel.mealPlans[index])
+		viewModel.mealPlans.remove(at: index)
 	}
 }
 
@@ -229,7 +228,7 @@ struct ExampleData {
 			  "calories": 1300
 			},
 	{
-	  "day": 2,
+	  "day": 3,
 	  "meals": [
 		{"name": "Breakfast", "food": ["Oranges", "Yogurt"]},
 		{"name": "Lunch", "food": ["Spinach Salad", "Salmon"]}

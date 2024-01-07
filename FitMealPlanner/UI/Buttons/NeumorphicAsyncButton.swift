@@ -58,11 +58,13 @@ struct NeumorphicAsyncButton: View {
 			// Appear only on inactive state
 			if !isPerformingTask && !isCompleted {
 				Text(text.uppercased())
+					.boldFont()
 					.fontWeight(.semibold)
 					.foregroundColor(.gray)
 			}
 			if isCompleted {
 				Text("Success".uppercased())
+					.boldFont()
 					.fontWeight(.semibold)
 					.foregroundColor(.pastelMint)
 			}
